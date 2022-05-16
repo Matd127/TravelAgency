@@ -1,10 +1,11 @@
 import express from 'express'
 import {Request, Response} from 'express'
-
+import {connect} from './db'
 const app = express()
 
 app.use(express.json())
 
+connect();
 
 app.get('/', function (req: Request, res: Response) {
   res.send('GET Hello World')
