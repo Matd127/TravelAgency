@@ -1,17 +1,40 @@
-import { Travel } from "./Travel"
+import mongoose from "mongoose"
 
-export class Reservation{
+const ReservationSchema = new mongoose.Schema({
+    number_of_places:{
+        type: Number, 
+        required: true,
+        min: 1,
+        max: 6
+    },
+    name:{
+        type: String,
+        required: true
+    },
+    dateOfBirth:{
+        type: Date,
+        required: true       
+    },
+    street:{
+        type: String,
+        required: true
+    },
+    postalCode:{
+        type: String,
+        required: true,
+        maxlength: 6
+    },
+    travel:{
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Travel'
+    },
+    user:{
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+})
 
-    number_of_places: string
-    name: string
-    surname: string
-    date_of_birth: Date
-    street: string
-    postal_code: string
-    city: string
-    email: string
-    phone_number: string
-    travel: Travel
-
-    
-}
+const ReservationModel = mongoose.model("Reservation", ReservationSchema)
+export default ReservationSchema
