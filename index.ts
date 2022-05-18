@@ -1,18 +1,11 @@
 import express from 'express'
 import {Request, Response} from 'express'
 import {connect} from './db'
+
+const paymentmetod = require('./routers/paymentmethod')
 const app = express()
-
 app.use(express.json())
-
 connect();
 
-app.get('/', function (req: Request, res: Response) {
-  res.send('GET Hello World')
-})
-app.post('/', function (req: Request, res: Response) {
-  console.log(req.body) // e.x. req.body.title 
-  res.status(200).send('POST Hello World')
-})
-
+app.use('/paymentMethos', paymentmetod)
 app.listen(3000)
