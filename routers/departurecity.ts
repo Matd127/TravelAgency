@@ -1,7 +1,7 @@
 import DepartureCityModel from "../models/DepartureCity";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import express from 'express';
-import { isAuth } from "./tokenVerify";
+import { isAdmin, isAuth } from "./tokenVerify";
 
 const router = express.Router();
 const app = express()
@@ -21,7 +21,7 @@ router.post('/',  async (req: Request, res: Response)=>{
     }
 })
 
-router.get('/', isAuth, async (req: Request, res: Response)=>{
+router.get('/', isAuth, isAdmin, async (req: Request, res: Response)=>{
     const cities = await DepartureCityModel.find()
     res.status(201).json(cities)
 })

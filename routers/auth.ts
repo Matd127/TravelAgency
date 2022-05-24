@@ -2,6 +2,7 @@ import UserModel from "../models/User";
 import {Request, Response, NextFunction} from 'express'
 import express from 'express';
 import bcrypt from 'bcrypt';
+import { isAdmin } from "./tokenVerify";
 
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
@@ -31,7 +32,8 @@ router.post('/login',async (req:Request, res:Response) => {
             const token = jwt.sign(
                 {
                     _id: existsUser.id,
-                    login: existsUser.login
+                    login: existsUser.login,
+                    isAdmin: existsUser.isAdmin
                 }, 
                 process.env.JWT_SECRET
             )
