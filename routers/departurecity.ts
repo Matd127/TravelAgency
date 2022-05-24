@@ -1,12 +1,13 @@
 import DepartureCityModel from "../models/DepartureCity";
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import express from 'express';
+import { isAuth } from "./tokenVerify";
 
 const router = express.Router();
 const app = express()
 app.use(express.json())
 
-router.post('/', async (req: Request, res: Response)=>{
+router.post('/',  async (req: Request, res: Response)=>{
     const newPaymentMethod = new DepartureCityModel({
         city: req.body.city,
         travelBy: req.body.travelBy
@@ -20,7 +21,7 @@ router.post('/', async (req: Request, res: Response)=>{
     }
 })
 
-router.get('/', async (req: Request, res: Response)=>{
+router.get('/', isAuth, async (req: Request, res: Response)=>{
     const cities = await DepartureCityModel.find()
     res.status(201).json(cities)
 })

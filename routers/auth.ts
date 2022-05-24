@@ -1,15 +1,18 @@
 import UserModel from "../models/User";
-import {Request, Response} from 'express'
+import {Request, Response, NextFunction} from 'express'
 import express from 'express';
-import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import jwt from "jsonwebtoken";
+
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config("./.env");
 
 const router = express.Router();
 const app = express()
+
+
 app.use(express.json())
 
-const JWT_SECRET = "76985b6#@!01ae96ae1f@cdb9e404dde80f2$@#$34bbd231e3#!f4ccd04$#e09"
 
 router.post('/login',async (req:Request, res:Response) => {
     try{
@@ -30,7 +33,7 @@ router.post('/login',async (req:Request, res:Response) => {
                     _id: existsUser.id,
                     login: existsUser.login
                 }, 
-                JWT_SECRET
+                process.env.JWT_SECRET
             )
             res.status(201).json({token})
         }
@@ -69,6 +72,5 @@ router.post('/register',async (req:Request, res:Response) => {
     }
    
 })
-
 
 module.exports = router

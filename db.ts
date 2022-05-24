@@ -1,12 +1,10 @@
-import { ChangeStreamDocument } from "mongodb";
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config({ path: './routers/.env' });
 
 
-export const connect = async (): Promise<void> => {
-
-    console.log("Connecting to Mongo...")
-    const connString = 'mongodb+srv://Admin:Admin123@cluster0.iixlt.mongodb.net/?retryWrites=true&w=majority'
-    const db = await mongoose.connect(connString)
+export const connect =  () => {
+    console.log(process.env.DB_CONNECT)
+    mongoose.connect(process.env.DB_CONNECT)
     console.log('Mongo Connected!')
-
-}
+ }

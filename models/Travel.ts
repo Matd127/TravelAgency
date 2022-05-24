@@ -38,6 +38,10 @@ const TravelSchema = new mongoose.Schema({
         required: true,
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hotel'
+    },
+    isAvailable:{
+        type: Boolean,
+        required: true
     }
 })
 
