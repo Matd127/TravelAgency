@@ -30,5 +30,33 @@ router.get('/:id', async (req: Request, res: Response)=>{
     res.status(201).json(hotel)
 })
 
+router.put('/:id',async (req:Request, res: Response) => {
+    const newHotel = new HotelModel(req.body.id)
+    try{
+        const updatedHotel = await HotelModel.findByIdAndUpdate(
+            req.params.id, 
+            {
+                $set: req.body
+            },
+            {
+                new: true
+            }
+        )
+        res.status(201).json(updatedHotel)
+    }
+    catch(error){
+        return res.status(500).json(error)
+    }
+})
+
+router.delete('/:id',async (req:Request, res: Response) => {
+    try{
+        await HotelModel.findByIdAndDelete(req.params.id);
+        return res.status(201).json("Hotel has been deleted.")
+    }
+    catch(error){
+        return res.status(500).json(error)
+    }
+})
 
 module.exports = router

@@ -13,21 +13,21 @@ router.post('/', async (req: Request, res: Response)=>{
     })
     try{
         const savePaymentMethod = await newPaymentMethod.save();
-        res.status(200).json("Added new Payment: " + newPaymentMethod)
+        return res.status(200).json("Added new Payment: " + newPaymentMethod)
     }
     catch(error){
-        res.status(500).json(error)
+        return res.status(500).json(error)
     }
 })
 
 router.get('/', async (req: Request, res: Response)=>{
     const payments = await PaymentMethodModel.find()
-    res.status(201).json(payments)
+    return res.status(201).json(payments)
 })
 
 router.get('/:id', async (req: Request, res: Response)=>{
     const payment = await PaymentMethodModel.findById(req.params.id)
-    res.status(201).json(payment)
+    return res.status(201).json(payment)
 })
 
 router.put('/:id', async (req: Request, res: Response)=>{
@@ -45,17 +45,17 @@ router.put('/:id', async (req: Request, res: Response)=>{
        res.status(201).json(updatedPayment)
     }
     catch(error){
-        res.status(500).json(error)
+        return res.status(500).json(error)
     }
 
 })
 router.delete('/:id', async (req: Request, res: Response) =>{
     try{
         await PaymentMethodModel.findByIdAndDelete(req.params.id);
-        res.status(201).json("Method has been deleted.")
+        return res.status(201).json("Method has been deleted.")
     }
     catch(error){
-        res.status(500).json(error)
+        return res.status(500).json(error)
     }
 
 })

@@ -4,7 +4,9 @@ import UserModel from "../models/User";
 
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-dotenv.config("./.env");
+dotenv.config({
+    path: './.env'
+});
 
 
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
@@ -24,7 +26,7 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
         next()
     }
     else{
-        res.send(401).send("Access Denied")
+        res.status(401).send("Access Denied")
     }
 
 }
@@ -35,7 +37,7 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) =>{
         console.log(res.locals.userInf.isAdmin == true)
 
         if(!res.locals.userInf.isAdmin)
-            return res.status(401).send("Sorry you aren't admin *sad*")
+            return res.status(401).send("Sorry you aren't an admin *sad*")
         else
             next()
     })

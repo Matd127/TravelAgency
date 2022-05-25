@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-dotenv.config({ path: './routers/.env' });
+dotenv.config({ 
+    path: './routers/.env' 
+});
 
 
 export const connect = () => {

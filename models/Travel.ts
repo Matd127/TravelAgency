@@ -41,9 +41,10 @@ const TravelSchema = new mongoose.Schema({
     },
     isAvailable:{
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     }
 })
 
 const TravelModel = mongoose.model("Travel", TravelSchema)
-export default TravelSchema
+export default TravelModel
