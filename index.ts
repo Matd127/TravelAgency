@@ -7,13 +7,17 @@ const departurecities = require('./routers/departurecity')
 const hotels = require('./routers/hotel')
 const auths = require('./routers/auth')
 const travels = require('./routers/travel')
+const reservation = require('./routers/reservation')
+
 const app = express()
 app.use(express.json())
 connect();
+
 
 app.use('/auth', auths)
 app.use('/hotels', hotels)
 app.use('/departurecities', departurecities)
 app.use('/paymentmethods', paymentmetods)
 app.use('/travels', travels)
+app.use('/reservation', reservation)
 app.listen(3000)

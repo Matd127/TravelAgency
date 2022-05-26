@@ -1,4 +1,3 @@
-import express from 'express'
 import {Request, Response, NextFunction} from 'express'
 import UserModel from "../models/User";
 
@@ -19,8 +18,6 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 
             const tokenUser = JSON.parse(JSON.stringify(data))
             let user = await UserModel.findOne({login: tokenUser.login})
-
-            // console.log("Am i admin? " + user.isAdmin)
             res.locals.userInf = user
         })       
         next()

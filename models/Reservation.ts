@@ -11,6 +11,10 @@ const ReservationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    surname:{
+        type: String,
+        required: true
+    },
     dateOfBirth:{
         type: Date,
         required: true       
@@ -33,8 +37,13 @@ const ReservationSchema = new mongoose.Schema({
         required: true,
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    paymentMethod:{
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'PaymentMethod'
     }
 })
 
 const ReservationModel = mongoose.model("Reservation", ReservationSchema)
-export default ReservationSchema
+export default ReservationModel
