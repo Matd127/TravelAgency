@@ -18,7 +18,7 @@ router.post('/',  isAuth, isAdmin, async (req:Request, res: Response) => {
         returnDate: req.body.returnDate,
         departureCity: req.body.departureCity,
         hotel: req.body.hotel,
-        isAvaliable: req.body.isAvailable
+        isAvailable: req.body.isAvailable
     })
     try{
         const saveTravel = await newTravel.save()
@@ -37,7 +37,7 @@ router.get('/lastminute', async (req:Request, res: Response) => {
     return res.status(201).json(travels)
 })
 
-router.get('/',  isAuth, isAdmin, async (req:Request, res: Response) => {
+router.get('/', async (req:Request, res: Response) => {
     const travels = await TravelModel.find({isAvailable: true})
     .populate('departureCity')
     .populate('hotel')
