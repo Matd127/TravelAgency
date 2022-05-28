@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const ReservationSchema = new mongoose.Schema({
-    number_of_places:{
+    numberOfPlaces:{
         type: Number, 
         required: true,
         min: 1,

@@ -18,7 +18,7 @@ router.post('/', async (req:Request, res:Response) => {
     const user = jwt.decode(header, process.env.secret)
     const selectUser = await UserModel.findOne({login: user.login}).lean()
     const reservation =  new ReservationModel({
-        number_of_places: req.body.number_of_places,
+        numberOfPlaces: req.body.numberOfPlaces,
         name: req.body.name,
         surname: req.body.surname,
         dateOfBirth: req.body.dateOfBirth,
@@ -53,6 +53,40 @@ router.post('/', async (req:Request, res:Response) => {
     catch(error){
         res.status(500).json(error)
     }
+})
+
+router.delete('/cancel/:id',async (req:Request, res: Response) => {
+    try{
+        const header = req.headers["authorization"]?.split(' ')[1];
+        const user = jwt.decode(header, process.env.secret)
+        const selectUser = await UserModel.findOne({login: user.login})
+        const selectReservation = await ReservationModel.findById(req.params.id)
+        if(selectReservation.user.equals(selectUser._id))
+        {
+            await ReservationModel.deleteOne({selectReservation})
+            return res.status(201).json("Reservation has been canceled")
+        }
+        else{
+            return res.status(401).json("You cannot cancel this reservation")   
+        }
+    }
+    catch(error){
+        return res.status(500).json(error)
+    }
+})
+
+//Wyswietlanie rezerwacji nalezacych do danego uzytkownika
+router.get('/reservations',async (req:Request, res:Response) => {
+    const header = req.headers["authorization"]?.split(' ')[1];
+    const user = jwt.decode(header, process.env.secret)
+    const reservations = await ReservationModel.find({user: user.login}).populate('travel').populate('user').populate('paymentMethod')
+    return res.status(201).json(reservations)
+})
+
+//Wyswietlanie wszystkich rezerwacji admin only
+router.get('/all', isAuth, isAdmin, async (req:Request, res:Response) => {
+    const reservations = await ReservationModel.find().populate('travel').populate('user').populate('paymentMethod')
+    return res.status(201).json(reservations)
 })
 
 
