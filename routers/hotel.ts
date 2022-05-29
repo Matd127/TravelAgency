@@ -1,12 +1,13 @@
 import {Request, Response} from 'express'
 import express from 'express';
 import HotelModel from "../models/Hotel";
+import { isAdmin, isAuth } from './tokenVerify';
 
 const router = express.Router();
 const app = express()
 app.use(express.json())
 
-router.post('/', async (req: Request, res: Response)=>{
+router.post('/', isAuth, isAdmin, async (req: Request, res: Response)=>{
     const hotel = new HotelModel({
         name: req.body.name,
         description: req.body.description
@@ -30,7 +31,7 @@ router.get('/:id', async (req: Request, res: Response)=>{
     res.status(201).json(hotel)
 })
 
-router.put('/:id',async (req:Request, res: Response) => {
+router.put('/:id', isAuth, isAdmin, async (req:Request, res: Response) => {
     const newHotel = new HotelModel(req.body.id)
     try{
         const updatedHotel = await HotelModel.findByIdAndUpdate(
@@ -49,7 +50,7 @@ router.put('/:id',async (req:Request, res: Response) => {
     }
 })
 
-router.delete('/:id',async (req:Request, res: Response) => {
+router.delete('/:id', isAuth, isAdmin, async (req:Request, res: Response) => {
     try{
         await HotelModel.findByIdAndDelete(req.params.id);
         return res.status(201).json("Hotel has been deleted.")

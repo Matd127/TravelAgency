@@ -31,7 +31,7 @@ router.get('/:id', async (req: Request, res: Response)=>{
     res.status(201).json(city)
 })
 
-router.put('/:id',async (req:Request, res:Response) => 
+router.put('/:id', isAuth, isAdmin, async (req:Request, res:Response) => 
 {
     const depcity = new DepartureCityModel(req.body.id)
     try{
@@ -51,7 +51,7 @@ router.put('/:id',async (req:Request, res:Response) =>
     }
 })
 
-router.delete('/:id',async (req:Request, res:Response) => {
+router.delete('/:id',isAuth, isAdmin, async (req:Request, res:Response) => {
     try{
         await DepartureCityModel.findByIdAndDelete(req.params.id);
         res.status(201).json("City has been deleted.")

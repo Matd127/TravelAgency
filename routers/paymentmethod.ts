@@ -1,12 +1,13 @@
 import PaymentMethodModel from "../models/PaymentMethod";
 import {Request, Response} from 'express'
 import express from 'express';
+import { isAdmin, isAuth } from "./tokenVerify";
 
 const router = express.Router();
 const app = express()
 app.use(express.json())
 
-router.post('/', async (req: Request, res: Response)=>{
+router.post('/', isAuth, isAdmin, async (req: Request, res: Response)=>{
     const newPaymentMethod = new PaymentMethodModel({
         isOnlinePayment: req.body.isOnlinePayment,
         typeOfPayment: req.body.typeOfPayment
@@ -30,7 +31,7 @@ router.get('/:id', async (req: Request, res: Response)=>{
     return res.status(201).json(payment)
 })
 
-router.put('/:id', async (req: Request, res: Response)=>{
+router.put('/:id', isAuth, isAdmin, async (req: Request, res: Response)=>{
     const newPaymentMethod = new PaymentMethodModel(req.body.id)
     try{
         const updatedPayment = await PaymentMethodModel.findByIdAndUpdate(
@@ -49,7 +50,7 @@ router.put('/:id', async (req: Request, res: Response)=>{
     }
 
 })
-router.delete('/:id', async (req: Request, res: Response) =>{
+router.delete('/:id', isAuth, isAdmin, async (req: Request, res: Response) =>{
     try{
         await PaymentMethodModel.findByIdAndDelete(req.params.id);
         return res.status(201).json("Method has been deleted.")

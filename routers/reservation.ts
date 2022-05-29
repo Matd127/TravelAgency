@@ -10,10 +10,7 @@ const router = express.Router();
 const app = express()
 app.use(express.json())
 
-
-//Rezerwacja, anulowanie rezerwacji, edycja danych, wyświetlanie własnych rezerwacji
-
-router.post('/', async (req:Request, res:Response) => {
+router.post('/', isAuth, async (req:Request, res:Response) => {
     const header = req.headers["authorization"]?.split(' ')[1];
     const user = jwt.decode(header, process.env.secret)
     const selectUser = await UserModel.findOne({login: user.login}).lean()
@@ -55,7 +52,7 @@ router.post('/', async (req:Request, res:Response) => {
     }
 })
 
-router.delete('/cancel/:id',async (req:Request, res: Response) => {
+router.delete('/cancel/:id', isAuth, async (req:Request, res: Response) => {
     try{
         const header = req.headers["authorization"]?.split(' ')[1];
         const user = jwt.decode(header, process.env.secret)
@@ -75,7 +72,6 @@ router.delete('/cancel/:id',async (req:Request, res: Response) => {
     }
 })
 
-//Wyswietlanie rezerwacji nalezacych do danego uzytkownika
 router.get('/reservations',async (req:Request, res:Response) => {
     const header = req.headers["authorization"]?.split(' ')[1];
     const user = jwt.decode(header, process.env.secret)
@@ -83,7 +79,6 @@ router.get('/reservations',async (req:Request, res:Response) => {
     return res.status(201).json(reservations)
 })
 
-//Wyswietlanie wszystkich rezerwacji admin only
 router.get('/all', isAuth, isAdmin, async (req:Request, res:Response) => {
     const reservations = await ReservationModel.find().populate('travel').populate('user').populate('paymentMethod')
     return res.status(201).json(reservations)
